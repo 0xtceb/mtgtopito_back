@@ -2,3 +2,4 @@ local_settings.py
 static/
 debug.log
 db.sqlite3
+*.pyc
