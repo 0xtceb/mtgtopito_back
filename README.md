@@ -3,6 +3,8 @@ mtgtopito back end
 
 ## Prerequises
 
+Nginx ( optionnal you can still use apache )
+Uwsgi ( optionnal you can use gunicorn )
 Django 1.11.20
 
 ## Installation
