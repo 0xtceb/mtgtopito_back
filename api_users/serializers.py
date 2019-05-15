@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import base64
 import urllib
 import urllib2
 import json
@@ -7,9 +6,12 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from rest_framework import serializers
 from api_users.models import Card, Deck
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes
-from mailjet_rest import Client
+
+if settings.ENABLE_TRANSACTIONNAL_MAILS:
+    import base64
+    from django.utils.http import urlsafe_base64_encode
+    from django.utils.encoding import force_bytes
+    from mailjet_rest import Client
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -20,28 +22,24 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
     def send_confirmation_email(self, user):
         confirmation_url = "http://TODOCONFIRMATIONURL/%s" % urlsafe_base64_encode(force_bytes(user.pk))
-        url = 'https://api.mailjet.com/v3.1/send'
         api_key = settings.MAILJET_API_KEY
         api_secret = settings.MAILJET_SECRET_KEY
-        mailjet = Client(auth=(api_key, api_secret), version='v3.1')
         data = {
-          'Messages': [
-                        {
-                                "From": {
-                                        "Email": "%s" % settings.EMAIL_SENDER,
-                                        "Name": "MTG TOPITO"
-                                },
-                                "To": [
-                                        {
-                                                "Email": "%s" % user.email,
-                                                "Name": "%s" % user.username
-                                        }
-                                ],
-                                "Subject": "Email de confirmation MTG TOPITO",
-                                "TextPart": "Votre inscription est bientôt terminée ! Voici votre lien de confirmation : %s" % confirmation_url,
-                                "HTMLPart": "<h3>Votre inscription est bientôt terminée !</h3><a href='%s'>Voici votre lien de confirmation</a>" % confirmation_url
-                        }
-                ]
+          'Messages':   [{
+                        "From": {
+                            "Email": "%s" % settings.EMAIL_SENDER,
+                            "Name": "MTG TOPITO"
+                        },
+                        "To": [
+                            {
+                                "Email": "%s" % user.email,
+                                "Name": "%s" % user.username
+                            }
+                        ],
+                        "Subject": "Email de confirmation MTG TOPITO",
+                        "TextPart": "Votre inscription est bientôt terminée ! Voici votre lien de confirmation : %s" % confirmation_url,
+                        "HTMLPart": "<h3>Votre inscription est bientôt terminée !</h3><a href='%s'>Voici votre lien de confirmation</a>" % confirmation_url
+                        }]
         }
 
         mailjet = Client(auth=(api_key, api_secret), version='v3.1')
@@ -65,10 +63,14 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         result = json.load(response)
         if not result['success']:
             raise serializers.ValidationError('Vous êtes un robot sir.')
-
+        user = User.objects.create_user(**validated_data)
+        if settings.ENABLE_TRANSACTIONNAL_MAILS:
+            self.send_confirmation_email(user)
+        return user
         if User.objects.filter(email = validated_data['email']).count() == 0:
             user = User.objects.create_user(**validated_data)
-            self.send_confirmation_email(user)
+            if settings.ENABLE_TRANSACTIONNAL_MAILS:
+                self.send_confirmation_email(user)
             return user
         else:
             raise serializers.ValidationError('Cet email est déjà pris !')
