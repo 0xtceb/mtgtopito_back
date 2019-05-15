@@ -9,11 +9,11 @@ Uwsgi ( optionnal you can use gunicorn )
 
 Here is an excellent tutorial :
 
-[Nginx + Uwsgi] (https://uwsgi-docs.readthedocs.io/en/latest/tutorials/Django_and_nginx.html)
+[Nginx + Uwsgi](https://uwsgi-docs.readthedocs.io/en/latest/tutorials/Django_and_nginx.html)
 
-[Django 1.11.20] (https://www.djangoproject.com/)
+[Django 1.11.20](https://www.djangoproject.com/)
 
-[Django Rest Framework] (https://www.django-rest-framework.org/)
+[Django Rest Framework](https://www.django-rest-framework.org/)
 
 ## Installation
 
