@@ -3,11 +3,11 @@ mtgtopito back end
 
 ## Prerequises
 
-Nginx ( optionnal you can still use apache )
+[Nginx + Uwsgi](https://uwsgi-docs.readthedocs.io/en/latest/tutorials/Django_and_nginx.html)
 
-Uwsgi ( optionnal you can use gunicorn )
+[Django 1.11.20](https://www.djangoproject.com/)
 
-Django 1.11.20
+[Django Rest Framework](https://www.django-rest-framework.org/)
 
 ## Installation
 
