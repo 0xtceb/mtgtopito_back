@@ -13,7 +13,7 @@ Django 1.11.20
 
 Just clone this repo, modify the settings to your liking and run :
 
-"manage.py migrate" followed by "manage.py collectstatic --no-input --clear"
+`manage.py migrate` followed by `manage.py collectstatic --no-input --clear`
 
 ## Django settings
 
