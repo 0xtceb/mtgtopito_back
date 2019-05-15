@@ -3,12 +3,6 @@ mtgtopito back end
 
 ## Prerequises
 
-Nginx ( optionnal you can still use apache )
-
-Uwsgi ( optionnal you can use gunicorn )
-
-Here is an excellent tutorial :
-
 [Nginx + Uwsgi](https://uwsgi-docs.readthedocs.io/en/latest/tutorials/Django_and_nginx.html)
 
 [Django 1.11.20](https://www.djangoproject.com/)
