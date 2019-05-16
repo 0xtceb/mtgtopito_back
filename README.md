@@ -13,6 +13,10 @@ mtgtopito back end
 
 Just clone this repo, modify the settings to your liking and run :
 
+`pip install requests`
+
+`pip install mailjet_rest`
+
 `manage.py migrate` followed by `manage.py collectstatic --no-input --clear`
 
 ## Django settings
