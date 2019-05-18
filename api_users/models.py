@@ -22,6 +22,16 @@ class Card(models.Model):
     def __str__(self):
         return '%s' % self.name
 
+class DeckCard(models.Model):
+    deck = models.ForeignKey(Deck, default=None, blank=True)
+    card = models.ForeignKey(Card, default=None, blank=True)
+    quantity = models.IntegerField(default=1)
+
+    def __str__(self):
+        return '%s contient %s %s' % (  self.deck.name,
+                                        self.quantity,
+                                        self.card.name)
+
 class Ligue(models.Model):
     name = models.CharField(max_length=200)
     decks = models.ManyToManyField(Deck)
