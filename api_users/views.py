@@ -13,7 +13,7 @@ from serializers import UserSerializer, CardSerializer, DeckSerializer
 from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework import permissions
-from api_users.models import Deck, Card
+from api_users.models import Deck, Card, DeckCard
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -39,9 +39,11 @@ class UserViewSet(viewsets.ModelViewSet):
         return Response(status=status.HTTP_200_OK)
 
 class DeckViewSet(viewsets.ModelViewSet):
+    permission_classes = [(permissions.AllowAny)]
     queryset = Deck.objects.all()
     serializer_class = DeckSerializer
 
 class CardViewSet(viewsets.ModelViewSet):
+    permission_classes = [(permissions.AllowAny)]
     queryset = Card.objects.all()
     serializer_class = CardSerializer
