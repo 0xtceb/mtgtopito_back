@@ -5,7 +5,7 @@ import json
 from django.contrib.auth.models import User
 from django.conf import settings
 from rest_framework import serializers
-from api_users.models import Card, Deck
+from api_users.models import Card, Deck, DeckCard, Ligue
 
 if settings.ENABLE_TRANSACTIONNAL_MAILS:
     import base64
@@ -75,12 +75,26 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         else:
             raise serializers.ValidationError('Cet email est déjà pris !')
 
+class LigueSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Ligue
+        fields = ('url', 'name', 'decks')
+
 class CardSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Card
-        fields = ('url', 'name', 'imageUrl')
+        fields = ('url', 'multiverseid', 'name', 'imageUrl')
 
 class DeckSerializer(serializers.HyperlinkedModelSerializer):
+    #user = UserSerializer(required=True)
+    commander = CardSerializer(required=True)
+
     class Meta:
         model = Deck
-        fields = ('url', 'name', 'commander')
+        fields = ('url', 'user', 'name', 'commander')
+
+    def create(self, validated_data):
+        commander_data = validated_data.pop('commander')
+        card = Card.objects.create(**commander_data)
+        deck = Deck.objects.create(commander=card, **validated_data)
+        return deck
