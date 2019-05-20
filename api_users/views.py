@@ -9,11 +9,11 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import viewsets
 from django.contrib.auth.models import User
-from serializers import UserSerializer, CardSerializer, DeckSerializer
+from serializers import UserSerializer, CardSerializer, DeckSerializer, LigueSerializer
 from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework import permissions
-from api_users.models import Deck, Card, DeckCard
+from api_users.models import Deck, Card, DeckCard, Ligue
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -47,3 +47,8 @@ class CardViewSet(viewsets.ModelViewSet):
     permission_classes = [(permissions.AllowAny)]
     queryset = Card.objects.all()
     serializer_class = CardSerializer
+
+class LigueViewSet(viewsets.ModelViewSet):
+    permission_classes = [(permissions.AllowAny)]
+    queryset = Ligue.objects.all()
+    serializer_class = LigueSerializer
