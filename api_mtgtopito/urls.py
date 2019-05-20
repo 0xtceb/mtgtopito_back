@@ -17,12 +17,13 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from rest_framework import routers
 from rest_framework.authtoken.views import obtain_auth_token
-from api_users.views import UserViewSet, DeckViewSet
+from api_users.views import UserViewSet, DeckViewSet, CardViewSet
 
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'decks', DeckViewSet)
+router.register(r'cards', CardViewSet)
 
 urlpatterns = [
     url(r'^api/login/', obtain_auth_token),
