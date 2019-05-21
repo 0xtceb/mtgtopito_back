@@ -10,11 +10,7 @@ class ChoiceInline(admin.TabularInline):
     model = DeckCard
 
 class DeckAdmin(admin.ModelAdmin):
-
-    #def card_number(self, instance):
-    #    return DeckCard.objects.filter(deck=instance).count()
-
-    list_display = ['commander', 'name', 'card_number']
+    list_display = ['commander', 'name']
     list_filter = ('commander','name')
     inlines = [ChoiceInline]
 
