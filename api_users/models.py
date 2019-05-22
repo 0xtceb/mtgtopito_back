@@ -6,7 +6,7 @@ from django.db import models
 
 class Deck(models.Model):
     user = models.ForeignKey(User, default=None, blank=True)
-    commander = models.ForeignKey("Card", default=None, blank=True, related_name='commander')
+    commander = models.ForeignKey("Card", default=None, blank=True, related_name='commander', on_delete=models.CASCADE)
     name = models.CharField(max_length=200)
     ligues = models.ManyToManyField("Ligue", default=None, blank=True)
 
@@ -24,7 +24,7 @@ class Card(models.Model):
 
 class DeckCard(models.Model):
     deck = models.ForeignKey(Deck, default=None, blank=True)
-    card = models.ForeignKey(Card, default=None, blank=True)
+    card = models.ForeignKey(Card, default=None, blank=True, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
 
     def __str__(self):
