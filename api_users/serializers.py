@@ -88,9 +88,10 @@ class CardSerializer(serializers.HyperlinkedModelSerializer):
 class DeckSerializer(serializers.HyperlinkedModelSerializer):
     commander = CardSerializer(required=True)
     ligues = LigueSerializer(required=False, many=True)
+    id = serializers.ReadOnlyField()
     class Meta:
         model = Deck
-        fields = ('url', 'user', 'name', 'commander', 'ligues')
+        fields = ('url', 'id', 'user', 'name', 'commander', 'ligues')
 
     def create(self, validated_data):
         commander_data = validated_data.pop('commander')
