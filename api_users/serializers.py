@@ -86,7 +86,6 @@ class CardSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', 'multiverseid', 'name', 'imageUrl')
 
 class DeckSerializer(serializers.HyperlinkedModelSerializer):
-    #user = UserSerializer(required=True)
     commander = CardSerializer(required=True)
     ligues = LigueSerializer(required=False, many=True)
     class Meta:

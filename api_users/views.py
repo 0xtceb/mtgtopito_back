@@ -43,6 +43,9 @@ class DeckViewSet(viewsets.ModelViewSet):
     queryset = Deck.objects.all()
     serializer_class = DeckSerializer
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
 class CardViewSet(viewsets.ModelViewSet):
     permission_classes = [(permissions.AllowAny)]
     queryset = Card.objects.all()
