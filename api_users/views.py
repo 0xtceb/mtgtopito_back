@@ -13,7 +13,7 @@ from serializers import UserSerializer, CardSerializer, DeckSerializer, LigueSer
 from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework import permissions
-from api_users.models import Deck, Card, DeckCard, Ligue
+from api_users.models import Deck, Card, Ligue
 
 
 class UserViewSet(viewsets.ModelViewSet):

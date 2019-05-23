@@ -17,20 +17,11 @@ class Card(models.Model):
     multiverseid = models.IntegerField(default=1)
     name = models.CharField(max_length=200)
     imageUrl = models.CharField(max_length=1000)
-
+    quantity = models.IntegerField(default=1)
+    deck = models.ForeignKey(Deck, default=None, null=True, blank=True)
 
     def __str__(self):
         return '%s' % self.name
-
-class DeckCard(models.Model):
-    deck = models.ForeignKey(Deck, default=None, blank=True)
-    card = models.ForeignKey(Card, default=None, blank=True, on_delete=models.CASCADE)
-    quantity = models.IntegerField(default=1)
-
-    def __str__(self):
-        return '%s contient %s %s' % (  self.deck.name,
-                                        self.quantity,
-                                        self.card.name)
 
 class Ligue(models.Model):
     name = models.CharField(max_length=200)
