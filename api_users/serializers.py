@@ -96,6 +96,9 @@ class DeckSerializer(serializers.HyperlinkedModelSerializer):
 
     def create(self, validated_data):
         commander_data = validated_data.pop('commander')
-        card = Card.objects.create(**commander_data)
-        deck = Deck.objects.create(commander=card, **validated_data)
+        commander = Card.objects.create(**commander_data)
+        cards_data = validated_data.pop('cards')
+        deck = Deck.objects.create(commander=commander, **validated_data)
+        for card in cards_data:
+            Card.objects.create(deck=deck, **card)
         return deck
