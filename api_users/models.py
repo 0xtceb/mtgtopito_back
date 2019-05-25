@@ -18,7 +18,8 @@ class Card(models.Model):
     name = models.CharField(max_length=200)
     imageUrl = models.CharField(max_length=1000)
     quantity = models.IntegerField(default=1)
-    deck = models.ForeignKey(Deck, default=None, null=True, blank=True)
+    type = models.CharField(max_length=100, default=None, null=True, blank=True)
+    deck = models.ForeignKey(Deck, default=None, related_name='cards', null=True, blank=True)
 
     def __str__(self):
         return '%s' % self.name

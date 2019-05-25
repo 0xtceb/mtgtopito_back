@@ -83,12 +83,13 @@ class LigueSerializer(serializers.HyperlinkedModelSerializer):
 class CardSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Card
-        fields = ('url', 'multiverseid', 'name', 'imageUrl')
+        fields = ('url', 'multiverseid', 'name', 'type', 'imageUrl', 'quantity', 'deck')
 
 class DeckSerializer(serializers.HyperlinkedModelSerializer):
     commander = CardSerializer(required=True)
     ligues = LigueSerializer(required=False, many=True)
     cards = CardSerializer(required=False, many=True)
+
     id = serializers.ReadOnlyField()
     class Meta:
         model = Deck
