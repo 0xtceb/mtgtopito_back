@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework import status
@@ -17,13 +17,13 @@ from api_users.models import Deck, Card, Ligue
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    # permission_classes = [(permissions.IsAuthenticatedOrReadOnly)]
+
     permission_classes = [(permissions.AllowAny)]
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-    """def list(self, request):
-        return Response(status=status.HTTP_200_OK)"""
+    def list(self, request):
+        return Response(status=status.HTTP_200_OK)
 
     @action(methods=['get'], detail=False, permission_classes=[IsAuthenticated])
     def current(self, request, pk=None):
@@ -39,19 +39,31 @@ class UserViewSet(viewsets.ModelViewSet):
         return Response(status=status.HTTP_200_OK)
 
 class DeckViewSet(viewsets.ModelViewSet):
-    permission_classes = [(permissions.AllowAny)]
+
+    permission_classes = [(permissions.IsAuthenticated)]
     queryset = Deck.objects.all()
     serializer_class = DeckSerializer
+
+    def list(self, request):
+        serializer_context = {
+            'request': request,
+        }
+        queryset = self.get_queryset()
+        decks = queryset.filter(user = self.request.user)
+        serializer = DeckSerializer(decks, many=True, context=serializer_context)
+        return Response(serializer.data)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
 class CardViewSet(viewsets.ModelViewSet):
-    permission_classes = [(permissions.AllowAny)]
+
+    permission_classes = [(permissions.IsAuthenticated)]
     queryset = Card.objects.all()
     serializer_class = CardSerializer
 
 class LigueViewSet(viewsets.ModelViewSet):
-    permission_classes = [(permissions.AllowAny)]
+
+    permission_classes = [(permissions.IsAuthenticated)]
     queryset = Ligue.objects.all()
     serializer_class = LigueSerializer
