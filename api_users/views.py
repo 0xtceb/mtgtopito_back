@@ -44,6 +44,16 @@ class DeckViewSet(viewsets.ModelViewSet):
     queryset = Deck.objects.all()
     serializer_class = DeckSerializer
 
+    """def retrieve(self, request, pk=None):
+        serializer_context = {
+            'request': request,
+        }
+
+        queryset = self.get_queryset()
+        deck = get_object_or_404(queryset, user = self.request.user, pk=pk)
+        serializer = DeckSerializer(deck, context=serializer_context)
+        return Response(serializer.data);"""
+
     def list(self, request):
         serializer_context = {
             'request': request,
@@ -55,6 +65,7 @@ class DeckViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
 
 class CardViewSet(viewsets.ModelViewSet):
 

@@ -89,7 +89,6 @@ class DeckSerializer(serializers.HyperlinkedModelSerializer):
     commander = CardSerializer(required=True)
     ligues = LigueSerializer(required=False, many=True)
     cards = CardSerializer(required=False, many=True)
-
     id = serializers.ReadOnlyField()
     class Meta:
         model = Deck
@@ -103,3 +102,23 @@ class DeckSerializer(serializers.HyperlinkedModelSerializer):
         for card in cards_data:
             Card.objects.create(deck=deck, **card)
         return deck
+
+    def update(self, instance, validated_data):
+        commander_data = validated_data.pop('commander')
+        commander = instance.commander
+        commander.multiverseid = commander_data.get('multiverseid', commander.multiverseid)
+        commander.name = commander_data.get('name', commander.name)
+        commander.type = commander_data.get('type', commander.type)
+        commander.imageUrl = commander_data.get('imageUrl', commander.imageUrl)
+        commander.quantity = 1
+        commander.save()
+
+        cards_data = validated_data.pop('cards')
+        for card in cards_data:
+            if not card.get('deck'):
+                Card.objects.create(deck=instance, **card)
+
+
+        instance.name = validated_data["name"]
+        instance.save()
+        return instance
